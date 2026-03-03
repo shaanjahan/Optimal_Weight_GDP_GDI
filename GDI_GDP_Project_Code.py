@@ -1,6 +1,7 @@
 """
-Complete GDP/GDI Optimal Weighting Analysis
-Modified for read-only filesystem environments (cloud notebooks)
+Optimal Weight Gross Domestic Product and Gross Domestic Income: Productivity Calculation
+By: Lamae A. Maharaj 
+Feb 2026.
 """
 
 import pandas as pd
@@ -12,19 +13,14 @@ import time
 import os
 from pathlib import Path
 
-# ============================================================================
-# CONFIGURATION
-# ============================================================================
-
 API_KEY = "cb13b116bf78b290ea691bbf95c189bf"  
 
-# Try to find a writable directory
 def get_output_dir():
     """Find a writable directory for outputs."""
     possible_dirs = [
-        os.path.expanduser("~/gdp_gdi_output"),  # Home directory
-        "/tmp/gdp_gdi_output",  # Temp directory
-        "."  # Current directory (might not work)
+        os.path.expanduser("~/gdp_gdi_output"), 
+        "/tmp/gdp_gdi_output",  
+        "."  
     ]
     
     for directory in possible_dirs:
@@ -44,9 +40,7 @@ def get_output_dir():
 
 OUTPUT_DIR = '/Users/lamaemaharaj/Desktop/Economics Projects/GDP_GDI_Project'
 
-# ============================================================================
-# PART 0: DATA DOWNLOAD
-# ============================================================================
+# Downloading Data
 
 print("="*70)
 print("PART 0: DOWNLOADING DATA FROM FRED")
@@ -89,9 +83,7 @@ print(f"   ✓ Hours: {len(hours)} observations")
 
 print("\nData download complete!")
 
-# ============================================================================
-# PART 1: REVISION ANALYSIS
-# ============================================================================
+# Revision Analysis
 
 print("\n" + "="*70)
 print("PART 1: COMPUTING REVISIONS AND ERROR VARIANCES")
@@ -175,10 +167,7 @@ if gdi_sigma < gdp_sigma:
 else:
     print(f"\n⚠ Different from Nalewaik in our sample period")
 
-
-# ============================================================================
-# PART 2: OPTIMAL WEIGHT CALCULATION
-# ============================================================================
+# Optimal Weight Calculations
 
 print("\n" + "="*70)
 print("PART 2: COMPUTING OPTIMAL WEIGHTS")
@@ -219,9 +208,7 @@ print("-"*70)
 lambda_optimal = lambda_opt_corr
 
 
-# ============================================================================
-# PART 3: CONSTRUCT OUTPUT SERIES
-# ============================================================================
+# Output Series Creation
 
 print("\n" + "="*70)
 print("PART 3: CONSTRUCTING OUTPUT SERIES")
@@ -241,10 +228,7 @@ print(f"  2. BEA average (50-50)")
 print(f"  3. Optimal weighted ({lambda_optimal*100:.1f}% GDP, {(1-lambda_optimal)*100:.1f}% GDI)")
 print(f"\n{len(output_gdp)} observations from {output_gdp.index[0]} to {output_gdp.index[-1]}")
 
-
-# ============================================================================
 # PART 4: COMPUTE PRODUCTIVITY
-# ============================================================================
 
 print("\n" + "="*70)
 print("PART 4: COMPUTING LABOR PRODUCTIVITY")
@@ -267,10 +251,7 @@ growth_bls = compute_growth(productivity.loc[common_dates]).dropna()
 print(f"\nComputed productivity growth rates")
 print(f"Sample: {growth_gdp.index[0]} to {growth_gdp.index[-1]}")
 
-
-# ============================================================================
-# PART 5: RESULTS
-# ============================================================================
+# Results
 
 print("\n" + "="*70)
 print("PART 5: RESULTS")
@@ -322,10 +303,7 @@ for period_name, (start, end) in periods.items():
         print(f"  Optimal:   {avg_opt:6.2f}%")
         print(f"  Diff:      {diff:+6.2f} pp")
 
-
-# ============================================================================
-# PART 6: SAVE RESULTS (if possible)
-# ============================================================================
+# Saving Results
 
 print("\n" + "="*70)
 print("PART 6: SAVING RESULTS")
@@ -380,10 +358,7 @@ print("PARAMETER ESTIMATES (in memory)")
 print("-"*70)
 print(params.to_string(index=False))
 
-
-# ============================================================================
-# PART 7: CREATE PLOTS
-# ============================================================================
+# Data Visualizations
 
 print("\n" + "="*70)
 print("PART 7: CREATING VISUALIZATIONS")
@@ -391,7 +366,7 @@ print("="*70)
 
 plt.style.use('seaborn-v0_8-darkgrid')
 
-# Plot 1: Productivity growth over time
+# Productivity growth over time
 fig, ax = plt.subplots(figsize=(14, 6))
 
 ax.plot(growth_gdp.index, growth_gdp, label='GDP-based', alpha=0.7, linewidth=1.5)
@@ -415,7 +390,7 @@ if OUTPUT_DIR:
         print("  ⚠ Could not save plot")
 plt.show()
 
-# Plot 2: Difference
+# Differences
 fig, ax = plt.subplots(figsize=(14, 5))
 
 ax.plot(diff_opt_gdp.index, diff_opt_gdp, linewidth=1.5, color='darkblue')
@@ -438,10 +413,7 @@ if OUTPUT_DIR:
         pass
 plt.show()
 
-
-# ============================================================================
-# FINAL SUMMARY
-# ============================================================================
+# Final Summary
 
 print("\n" + "="*70)
 print("ANALYSIS COMPLETE")
