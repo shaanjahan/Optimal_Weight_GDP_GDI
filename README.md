@@ -9,9 +9,9 @@
 
 ## Overview
 
-GDP and GDI measure the same underlying economic activity from opposite sides of the national accounts, yet they routinely diverge due to independent measurement error. Standard practice either relies on GDP alone or applies the BEA's ad hoc 50–50 average — neither of which uses available information on the relative measurement quality of each series.
+GDP and GDI measure the same underlying economic activity from opposite sides of the national accounts, yet they routinely diverge due to independent measurement error. Standard practice either relies on GDP alone or uses the BEA's ad hoc 50–50 average, neither of which accounts for the relative measurement quality of each series.
 
-This project derives an **optimal weighted combination** of GDP and GDI using a signal extraction framework. Weights are determined by the relative revision volatility of each series, estimated from FRED real-time vintage data over 1990–2024. The optimal output measure is then used to construct an alternative labor productivity series, which is compared against the GDP-based and BLS official measures.
+This project derives an optimal weighted combination of GDP and GDI using a signal-extraction framework. Weights are determined by the relative revision volatility of each series, estimated from FRED real-time vintage data over 1990–2024. The optimal output measure is then used to construct an alternative labor productivity series, which is compared against the GDP-based and BLS official measures.
 
 ---
 
@@ -21,7 +21,7 @@ This project derives an **optimal weighted combination** of GDP and GDI using a 
 - The estimated optimal weights are **47.4% GDP and 52.6% GDI**, close to but distinct from the BEA 50–50 average.
 - When translated into labor productivity growth, the optimal series tracks the GDP-based measure closely on average, with a mean difference of approximately **0.008 percentage points**.
 - The largest divergences occur during episodes of large GDP–GDI discrepancies: the dot-com contraction (1999–2001) and the early COVID quarters (2020).
-- The 50–50 average performs reasonably well as a practical approximation but revision-based weighting provides a more defensible benchmark when measurement quality differs across the two output concepts.
+- The 50–50 average performs reasonably well as a practical approximation, but revision-based weighting provides a more defensible benchmark when measurement quality differs across the two output concepts.
 
 ---
 
@@ -29,7 +29,7 @@ This project derives an **optimal weighted combination** of GDP and GDI using a 
 
 ### Signal Extraction Framework
 
-Let true output $Y_t^*$ be observed with error:
+Let the true output $Y_t^*$ be observed with error:
 
 $$GDP_t = Y_t^* + u_t, \quad GDI_t = Y_t^* + v_t$$
 
